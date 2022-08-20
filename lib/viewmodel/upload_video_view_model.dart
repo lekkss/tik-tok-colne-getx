@@ -41,35 +41,40 @@ class UploadVideoController extends GetxController {
   //uploadVideo
   uploadVideo(String songName, String caption, String videoPath) async {
     try {
-      String uid = firebaseAuth.currentUser!.uid;
-      DocumentSnapshot userDoc =
-          await firestore.collection("users").doc(uid).get();
-      //get id
-      var allDocs = await firestore.collection("videos").get();
-      int len = allDocs.docs.length;
+      if (songName.isNotEmpty && caption.isNotEmpty) {
+        String uid = firebaseAuth.currentUser!.uid;
+        DocumentSnapshot userDoc =
+            await firestore.collection("users").doc(uid).get();
+        //get id
+        var allDocs = await firestore.collection("videos").get();
+        int len = allDocs.docs.length;
 
-      String videoUrl = await _uploadVideoToStorage("Video $len", videoPath);
-      String thumbnail = await _uploadImageToStorage("Video $len", videoPath);
+        String videoUrl = await _uploadVideoToStorage("Video $len", videoPath);
+        String thumbnail = await _uploadImageToStorage("Video $len", videoPath);
 
-      Video video = Video(
-          username: (userDoc.data()! as Map<String, dynamic>)["name"],
-          uid: uid,
-          id: "Video $len",
-          likes: [],
-          commentCount: 0,
-          sharedCount: 0,
-          songName: songName,
-          caption: caption,
-          videoUrl: videoUrl,
-          thumbnail: thumbnail,
-          profilePhoto:
-              (userDoc.data()! as Map<String, dynamic>)["profilePhoto"]);
+        Video video = Video(
+            username: (userDoc.data() as Map<String, dynamic>)["name"],
+            date: DateTime.now(),
+            uid: uid,
+            id: "Video $len",
+            likes: [],
+            commentCount: 0,
+            sharedCount: 0,
+            songName: songName,
+            caption: caption,
+            videoUrl: videoUrl,
+            thumbnail: thumbnail,
+            profilePhoto:
+                (userDoc.data() as Map<String, dynamic>)["profilePhoto"]);
 
-      await firestore.collection("videos").doc("Video $len").set(
-            video.toJson(),
-          );
+        await firestore.collection("videos").doc("Video $len").set(
+              video.toJson(),
+            );
 
-      Get.back();
+        Get.back();
+      } else {
+        Get.snackbar("Error uploading video", "Enter all felds");
+      }
     } catch (e) {
       Get.snackbar(
         "Error Uploading VIdeo",

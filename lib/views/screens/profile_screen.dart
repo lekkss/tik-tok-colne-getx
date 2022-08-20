@@ -6,7 +6,7 @@ import 'package:tik_tok/viewmodel/profile_viewmodel.dart';
 
 class ProfileScreen extends StatefulWidget {
   final String uid;
-  ProfileScreen({Key? key, required this.uid}) : super(key: key);
+  const ProfileScreen({Key? key, required this.uid}) : super(key: key);
 
   @override
   State<ProfileScreen> createState() => _ProfileScreenState();
@@ -162,7 +162,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               widget.uid == authControler.user!.uid
                                   ? "Sign Out"
                                   : controller.user['isFollowing']
-                                      ? "Unfolow"
+                                      ? "Unfollow"
                                       : "Follow",
                               style: const TextStyle(
                                 fontSize: 15,

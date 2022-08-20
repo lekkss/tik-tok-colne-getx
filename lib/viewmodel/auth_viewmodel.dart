@@ -110,7 +110,7 @@ class AuthController extends GetxController {
       } else {
         Get.snackbar(
           "Error Logging in",
-          "Please Enter all thr fields",
+          "Please Enter all the fields",
         );
       }
     } catch (e) {

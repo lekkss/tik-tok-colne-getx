@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Video {
   final String username;
+  final DateTime date;
   final String uid;
   final String id;
   final List likes;
@@ -15,6 +16,7 @@ class Video {
 
   Video(
       {required this.username,
+      required this.date,
       required this.uid,
       required this.id,
       required this.likes,
@@ -27,6 +29,7 @@ class Video {
       required this.profilePhoto});
   Map<String, dynamic> toJson() => {
         "username": username,
+        "date": date.toString(),
         "uid": uid,
         "profilePhoto": profilePhoto,
         "id": id,
@@ -43,6 +46,7 @@ class Video {
     var snapshot = snap.data() as Map<String, dynamic>;
     return Video(
       username: snapshot["username"],
+      date: DateTime.parse(snap['date'] as String),
       uid: snapshot["uid"],
       id: snapshot["id"],
       likes: snapshot["likes"],

@@ -29,7 +29,7 @@ class ProfileController extends GetxController {
 
     DocumentSnapshot userDoc =
         await firestore.collection('users').doc(_uid.value).get();
-    final userData = userDoc.data()! as dynamic;
+    final userData = userDoc.data() as dynamic;
     String name = userData['name'];
     String profilePhoto = userData['profilePhoto'];
     int likes = 0;
@@ -123,7 +123,7 @@ class ProfileController extends GetxController {
           .collection('following')
           .doc(_uid.value)
           .delete();
- 
+
       _user.value.update(
         'followers',
         (value) => (int.parse(value) - 1).toString(),

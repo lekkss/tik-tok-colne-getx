@@ -10,8 +10,11 @@ class VideoController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    _videoList.bindStream(
-        firestore.collection("videos").snapshots().map((QuerySnapshot query) {
+    _videoList.bindStream(firestore
+        .collection("videos")
+        .orderBy('date', descending: true)
+        .snapshots()
+        .map((QuerySnapshot query) {
       List<Video> retVal = [];
       for (var element in query.docs) {
         retVal.add(
