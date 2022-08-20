@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:tik_tok/constants.dart';
 import 'package:tik_tok/viewmodel/comment_viewmodel.dart';
+import 'package:timeago/timeago.dart' as tago;
 
 class CommentSceen extends StatelessWidget {
   final String id;
@@ -26,17 +28,18 @@ class CommentSceen extends StatelessWidget {
               Expanded(
                 child: Obx(() {
                   return ListView.builder(
-                    itemCount: 1,
+                    itemCount: commentController.comments.length,
                     itemBuilder: (context, index) {
+                      final comment = commentController.comments[index];
                       return ListTile(
                         leading: CircleAvatar(
                           backgroundColor: Colors.black,
-                          backgroundImage: NetworkImage("pp"),
+                          backgroundImage: NetworkImage(comment.profilePhoto),
                         ),
                         title: Row(
                           children: [
                             Text(
-                              "USername",
+                              "${comment.username}  ",
                               style: const TextStyle(
                                 color: Colors.red,
                                 fontSize: 20,
@@ -44,7 +47,7 @@ class CommentSceen extends StatelessWidget {
                               ),
                             ),
                             Text(
-                              "Comment Description",
+                              comment.comment,
                               style: const TextStyle(
                                 color: Colors.white,
                                 fontSize: 20,
@@ -55,8 +58,8 @@ class CommentSceen extends StatelessWidget {
                         subtitle: Row(
                           children: [
                             Text(
-                              "date",
-                              style: TextStyle(
+                              tago.format(comment.datePublished.toDate()),
+                              style: const TextStyle(
                                 fontSize: 12,
                                 color: Colors.white,
                               ),
@@ -65,8 +68,8 @@ class CommentSceen extends StatelessWidget {
                               width: 10,
                             ),
                             Text(
-                              "10 likes",
-                              style: TextStyle(
+                              "${comment.likes.length} likes",
+                              style: const TextStyle(
                                 fontSize: 12,
                                 color: Colors.white,
                               ),
@@ -74,13 +77,15 @@ class CommentSceen extends StatelessWidget {
                           ],
                         ),
                         trailing: InkWell(
-                          onTap: () {
-                            print("liked");
-                          },
+                          onTap: () =>
+                              commentController.likeComment(comment.id),
                           child: Icon(
                             Icons.favorite,
                             size: 25,
-                            color: Colors.red,
+                            color:
+                                comment.likes.contains(authControler.user!.uid)
+                                    ? Colors.red
+                                    : Colors.white,
                           ),
                         ),
                       );
