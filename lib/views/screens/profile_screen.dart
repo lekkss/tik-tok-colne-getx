@@ -154,14 +154,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             onTap: () {
                               if (widget.uid == authControler.user!.uid) {
                                 authControler.signOut();
+                              } else {
+                                controller.followUser();
                               }
                             },
                             child: Text(
                               widget.uid == authControler.user!.uid
                                   ? "Sign Out"
                                   : controller.user['isFollowing']
-                                      ? "Follow"
-                                      : "Unfollow",
+                                      ? "Unfolow"
+                                      : "Follow",
                               style: const TextStyle(
                                 fontSize: 15,
                                 fontWeight: FontWeight.bold,
